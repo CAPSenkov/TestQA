@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "1314c3b3-4d6a-49dd-b33e-1f192c8114e2",
+		"name": "Проверка создания пользователя с параметром firstName",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19289527"
+	},
+	"item": [
+		{
+			"name": "Допустимые по длине и символам значения firstName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Вернулся код 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"В теле вернулся ключ authToken\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"authToken\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"firstName\": \"{{correct_name}}\",\"phone\": \"+74441237887\", \"address\": \"г. Москва, ул. Хохотушкина, д. 16\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server_address}}/api/v1/users",
+					"host": [
+						"{{server_address}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Недопустимые по длине и символам значения firstName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Вернулся код 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Вернулось корректное тело ответа\", function () {",
+							"    pm.response.to.have.body({\"code\": 400, \"message\": \"Имя пользователя введено некорректно. Имя может содержать только русские или латинские буквы, длина должна быть не менее 2 и не более 15 символов\"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"firstName\": \"{{incorrect_name}}\",\"phone\": \"+74441237887\",\"address\": \"г. Москва, ул. Хохотушкина, д. 16\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server_address}}/api/v1/users",
+					"host": [
+						"{{server_address}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Передано пустое значение firstName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Получение кода 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Вернулось корректное тело ответа\", function () {",
+							"    pm.response.to.have.body({\"code\": 400, \"message\": \"Не все необходимые параметры были переданы\"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"firstName\": {{empty}},\"phone\": \"+74441237887\",\"address\": \"г. Москва, ул. Хохотушкина, д. 16\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server_address}}/api/v1/users",
+					"host": [
+						"{{server_address}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Не передан firstName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Вернулся код 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Вернулось корректное тело ответа\", function () {",
+							"    pm.response.to.have.body({\"code\": 400, \"message\": \"Не все необходимые параметры были переданы\"});",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"phone\": \"+74441237887\",\"address\": \"г. Москва, ул. Хохотушкина, д. 16\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server_address}}/api/v1/users",
+					"host": [
+						"{{server_address}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Передан другой тип данных в firstName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Вернулся код 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"firstName\": 123,\"phone\": \"+74441237887\",\"address\": \"г. Москва, ул. Хохотушкина, д. 16\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server_address}}/api/v1/users",
+					"host": [
+						"{{server_address}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "server",
+			"value": "https://6bb40aba-259c-498b-854f-cceaea9ed33c.serverhub.praktikum-services.ru"
+		}
+	]
+}
